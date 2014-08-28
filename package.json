@@ -1,0 +1,16 @@
+{
+  "name": "moarecokun",
+  "version": "0.0.0",
+  "description": "Interface for moareco",
+  "main": "observer.js",
+  "dependencies": {
+    "config": "^1.0.2",
+    "twitter": "^0.2.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "wmoai",
+  "license": "ISC"
+}
