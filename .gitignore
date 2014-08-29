@@ -1,3 +1,4 @@
-config/default.json
+config/*.json
+config/*.yaml
 log/*
 node_modules

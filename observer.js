@@ -36,7 +36,7 @@ var observeLog = function() {
 }
 observeLog();
 
-// twitter
+// post twit
 var detect = function(line) {
   var match = line.match(/\[[^\[\]]+\] \[([^\[\]]+)\] \S+ - (.+)/);
   if (match[1] == 'ERROR') {
@@ -47,4 +47,11 @@ var detect = function(line) {
   }
 }
 
+twit.stream('user', function(stream) {
+  stream.on('data', function(data) {
+    if (data.text) {
+      console.log(data.text);
+    }
+  });
+});
 
