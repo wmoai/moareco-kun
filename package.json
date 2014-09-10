@@ -6,7 +6,8 @@
   "dependencies": {
     "config": "^1.0.2",
     "twitter": "^0.2.9",
-    "yaml": "^0.2.3"
+    "yaml": "^0.2.3",
+    "node-rest-client": "~1.0.0"
   },
   "devDependencies": {},
   "scripts": {
