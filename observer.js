@@ -135,11 +135,15 @@ var generateReplyText = function(message, callback) {
     if (operation == "検索") {
       // search
       client.search(param, function(programs) {
-        var titles = new Array;
+        if (!programs || programs.length == 0) {
+          callback(param+" ナイ");
+          return;
+        }
+        var titles = "";
         programs.forEach(function(program) {
-          titles.push("「"+program.title+"」");
+          titles += "「"+program.title+"」\n";
         });
-        callback(titles.join("\n") + "ミツケタ");
+        callback(titles + "ミツケタ");
       });
     } else {
       // unknown operation
