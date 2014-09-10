@@ -104,7 +104,7 @@ var unkownMessages = [
   'あっ、ふーん',
   'そう・・・'
 ];
-var unkownMessageIndex = 0;
+var unkownMessageIndex = Math.floor(Math.random()*unkownMessages.length);
 
 var detectTwit = function(data) {
   if (!data.text) {
@@ -126,14 +126,18 @@ var detectTwit = function(data) {
 }
 
 var generateReplyText = function(message, callback) {
-  var reg = new RegExp("^\\s*([^\\s]+)\\s+(.+)");
+  var reg = new RegExp("^\\s*([^\\s]+)(?:\\s+(.+))?");
   var match = message.match(reg);
   if (match) {
     var operation = match[1];
-    var param = match[2].trim();
+    var param = match[2];
 
     if (operation == "検索") {
       // search
+      if (!param || param.trim() == "") {
+        callback("何を？");
+        return;
+      }
       client.search(param, function(programs) {
         if (!programs || programs.length == 0) {
           callback(param+" ナイ");
