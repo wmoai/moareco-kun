@@ -4,7 +4,7 @@ client = new Client();
 var host = "http://localhost:3030";
 
 var search = function(word, callback) {
-  if (!word || word.trim = "") {
+  if (!word || word.trim == "") {
     callback(null);
     return;
   }
