@@ -4,6 +4,8 @@ var util = require('util')
   , twitter = require('twitter');
 var twit = new twitter(config.Twitter.keys);
 
+var client = require('./client');
+
 var path = config.Log.path;
 var size = fs.statSync(path).size;
 
@@ -132,7 +134,13 @@ var generateReplyText = function(message, callback) {
 
     if (operation == "検索") {
       // search
-      callback("「"+param+"」を検索するよう前向きに検討します");
+      client.search(param, function(programs) {
+        var titles = new Array;
+        programs.forEach(function(program) {
+          titles.push("「"+program.title+"」");
+        });
+        callback(titles.join("\n") + "ミツケタ");
+      });
     } else {
       // unknown operation
       if (unkownMessageIndex >= unkownMessages.length - 1) {
