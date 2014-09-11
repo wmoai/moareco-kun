@@ -1,0 +1,16 @@
+{
+  "name": "moareco-kun",
+  "version": "0.0.0",
+  "homepage": "https://github.com/wmoai/moareco-kun",
+  "authors": [
+    "wmoai <wmoaism@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
