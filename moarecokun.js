@@ -47,9 +47,7 @@ var startObserve = function() {
       detectTwit(data);
     });
   });
-
-}
-exports.run = startObserve;
+}();
 
 
 var unkownMessages = [
@@ -183,7 +181,7 @@ var searchProgram = function(word, callback) {
     try {
       var programs = JSON.parse(data);
       if (!programs || programs.length == 0) {
-        callback(param+" ナイ");
+        callback(word+" ナイ");
         return;
       }
       var titles = "\n";
@@ -192,7 +190,7 @@ var searchProgram = function(word, callback) {
       });
       callback(titles + "ミツケタ");
     } catch (e) {
-      callback("もあれこ is dead.");
+      callback("もあれこ is dead : " + e.message);
     }
   });
 }
