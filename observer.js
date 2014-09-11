@@ -9,6 +9,8 @@ var client = require('./client');
 var path = config.Log.path;
 var size = fs.statSync(path).size;
 
+var brain = require('./brain');
+
 // observe log
 var observeLog = function() {
   console.log('Connect.');
@@ -19,7 +21,7 @@ var observeLog = function() {
         var readableStream = fs.createReadStream(path, {start:size}, {encoding: 'utf-8', bufferSize: 1});
         size = fs.statSync(path).size;
         readableStream.on('data', function(data) {
-          detectLog(data.toString().trim());
+          brain.readLog(data.toString().trim());
         });
         readableStream.on('end', function() {
 
@@ -38,52 +40,51 @@ var observeLog = function() {
 }
 observeLog();
 
-// detect log
-var detectLog = function(line) {
-  var match = line.match(/\[[^\[\]]+\] \[([^\[\]]+)\] \S+ - (.+)/);
-  if (match[1] == 'ERROR') {
-    var message = match[2];
-    postTwit("エラーでた : "+message, config.Twitter.reporter);
-  }
-}
+// var detectLog = function(line) {
+  // var match = line.match(/\[[^\[\]]+\] \[([^\[\]]+)\] \S+ - (.+)/);
+  // if (match[1] == 'ERROR') {
+    // var message = match[2];
+    // postTwit("エラーでた : "+message, config.Twitter.reporter);
+  // }
+// }
 
-var TwitStatus = function(message, replyName, replyId) {
-  this.message = "@"+replyName+" "+message;
-  if (replyId) {
-    this.param = {
-      "in_reply_to_status_id": replyId
-    }
-  }
-}
-TwitStatus.prototype.post = function() {
-  twit.verifyCredentials(function(data) {
-  }).updateStatus(this.message, this.param, function(data) {
-  });
-}
+// var TwitStatus = function(message, replyName, replyId) {
+  // this.message = "@"+replyName+" "+message;
+  // if (replyId) {
+    // this.param = {
+      // "in_reply_to_status_id": replyId
+    // }
+  // }
+// }
+// TwitStatus.prototype.post = function() {
+  // twit.verifyCredentials(function(data) {
+  // }).updateStatus(this.message, this.param, function(data) {
+    // console.log(data);
+  // });
+// }
 
-var twitQue = new Array;
-// post twit 
-var postTwit = function(message, replyName, replyId) {
-  var twitStatus = new TwitStatus(message, replyName, replyId);
-  twitQue.push(twitStatus);
-  twitWithQue();
-}
-var twitTimer = null;
-var twitWithQue = function() {
-  if (twitTimer == null && twitQue.length > 0) {
-    twitTimer = setTimeout(function() {
-      if (twitQue.length > 0) {
-        twitTimer = null;
-        twitWithQue();
-      } else {
-        twitTimer = null;
-      }
-    }, 60000);
+// var twitQue = new Array;
+// var postTwit = function(message, replyName, replyId) {
+  // var twitStatus = new TwitStatus(message, replyName, replyId);
+  // twitQue.push(twitStatus);
+  // twitWithQue();
+// }
+// var twitTimer = null;
+// var twitWithQue = function() {
+  // if (twitTimer == null && twitQue.length > 0) {
+    // twitTimer = setTimeout(function() {
+      // if (twitQue.length > 0) {
+        // twitTimer = null;
+        // twitWithQue();
+      // } else {
+        // twitTimer = null;
+      // }
+    // }, 60000);
 
-    var twitStatus = twitQue.shift();
-    twitStatus.post();
-  }
-}
+    // var twitStatus = twitQue.shift();
+    // twitStatus.post();
+  // }
+// }
 
 // observe twitter
 twit.stream('user', function(stream) {
@@ -143,9 +144,9 @@ var generateReplyText = function(message, callback) {
           callback(param+" ナイ");
           return;
         }
-        var titles = "";
+        var titles = "\n";
         programs.forEach(function(program) {
-          titles += "「"+program.title+"」\n";
+          titles += "・"+program.title+"\n";
         });
         callback(titles + "ミツケタ");
       });

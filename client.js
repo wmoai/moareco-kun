@@ -1,6 +1,5 @@
-var Client = require('node-rest-client').Client;
-
-client = new Client();
+var Client = require('node-rest-client').Client
+  , client = new Client();
 var host = "http://localhost:3030";
 
 var search = function(word, callback) {
